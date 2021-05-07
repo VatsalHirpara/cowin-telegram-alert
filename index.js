@@ -8,7 +8,7 @@ const pincode = '360311';
 
 // checks every 5 seconds
 getData()
-setInterval(getData, 5 * 1000)
+setInterval(getData, 30 * 1000)
 
 async function getData() {
     let currentDate = getCurrentDateInRequiredFormat();
@@ -24,13 +24,13 @@ async function getData() {
         console.error(error);
         return;
     }
-    console.log(`calling API at ${new Date()}`);
+    console.log(`calling API at ${new Date().toLocaleString(undefined, {timeZone: 'Asia/Kolkata'})}`);
     const centers = response.data.centers
     let isAvailable = false
     for (const center of centers) {
         let msg = ''
         for (const session of center.sessions) {
-            if (session.min_age_limit <= 45 && session.available_capacity > 0) {
+            if (session.min_age_limit < 45 && session.available_capacity > 0) {
                 let res = `${session.available_capacity} slots available for 18-44 at ${center.name} (${session.vaccine}) \n on ${session.date}`
                 msg = msg + res + '\n\n'
             } else {
@@ -40,6 +40,7 @@ async function getData() {
         if (msg !== '') {
             isAvailable = true
             sendMessage(msg)
+            await sleep(1000)
         }
         console.log(msg);
         msg = ''
