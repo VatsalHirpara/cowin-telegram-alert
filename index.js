@@ -6,7 +6,7 @@ const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID
 const pincode = '360311';
 
-// checks every 5 seconds
+// checks every 30 seconds
 getData()
 setInterval(getData, 30 * 1000)
 
