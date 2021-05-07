@@ -7,7 +7,8 @@ const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID
 const pincode = '360311';
 
 // checks every 5 seconds
-setInterval(getData(), 5 * 1000)
+getData()
+setInterval(getData, 5 * 1000)
 
 async function getData() {
     let currentDate = getCurrentDateInRequiredFormat();
