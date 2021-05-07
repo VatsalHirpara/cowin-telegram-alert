@@ -30,7 +30,7 @@ async function getData() {
     for (const center of centers) {
         let msg = ''
         for (const session of center.sessions) {
-            if (session.min_age_limit < 45 && session.available_capacity > 0) {
+            if (session.min_age_limit <= 45 && session.available_capacity > 0) {
                 let res = `${session.available_capacity} slots available for 18-44 at ${center.name} (${session.vaccine}) \n on ${session.date}`
                 msg = msg + res + '\n\n'
             } else {
