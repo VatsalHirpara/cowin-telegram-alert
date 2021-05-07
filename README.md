@@ -11,6 +11,7 @@ Change pincode at line 7 in [index.js](https://github.com/VatsalHirpara/cowin-te
 
 This code checks for availability of slots for particular pincode for next 7 days inclding today. 
 
+
 ## To run :
 ```
 npm start
@@ -20,3 +21,5 @@ npm start
 node index.js
 ```
 cowin API docs : [https://apisetu.gov.in/public/marketplace/api/cowin](https://apisetu.gov.in/public/marketplace/api/cowin)
+
+Cowin API is geo restricted, so deploy this script on Indian servers.
