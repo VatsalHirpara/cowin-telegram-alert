@@ -1,15 +1,16 @@
-const result = require('dotenv').config({path:'./conf.env'})
+require('dotenv').config({ path: './conf.env' })
 const axios = require("axios");
 
+//getting telegram token from env file
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
+const TELEGRAM_CHANNEL_ID = process.env.TELEGRAM_CHANNEL_ID
+const pincode = '360311';
 
-sendMessage('testing bot')
-// getData()
-// setInterval(getData, 60 * 1000) 
+// checks every 5 seconds
+setInterval(getData(), 5 * 1000)
 
 async function getData() {
-    let currentDate = getDateInRequiredFormat();
-    const pincode = 360311
+    let currentDate = getCurrentDateInRequiredFormat();
     let url = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pincode}&date=${currentDate}`
     let response = ""
     try {
@@ -23,8 +24,8 @@ async function getData() {
         return;
     }
     console.log(`calling API at ${new Date()}`);
-
     const centers = response.data.centers
+    let isAvailable = false
     for (const center of centers) {
         let msg = ''
         for (const session of center.sessions) {
@@ -35,14 +36,18 @@ async function getData() {
                 console.log(`No slots available for 18+ currently at ${center.name}`);
             }
         }
-        if(msg!=='') sendMessage(msg)
+        if (msg !== '') {
+            isAvailable = true
+            sendMessage(msg)
+        }
         console.log(msg);
         msg = ''
     }
     console.log('--------------------------------END------------------------------------')
+    return isAvailable
 }
 
-function getDateInRequiredFormat() {
+function getCurrentDateInRequiredFormat() {
     let date = new Date();
     let day = date.getDate()
     let month = date.getMonth() + 1
@@ -51,7 +56,7 @@ function getDateInRequiredFormat() {
 }
 
 async function sendMessage(msg) {
-    let url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=@gdl_vaccination_alerts&text=${msg}&parse_mode=HTML`
+    let url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHANNEL_ID}&text=${msg}&parse_mode=HTML`
     let response
     try {
         response = await axios.get(url)
@@ -59,4 +64,10 @@ async function sendMessage(msg) {
         console.error(error);
         return;
     }
+}
+
+function sleep(time) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, time);
+    });
 }
