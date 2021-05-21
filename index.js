@@ -31,7 +31,7 @@ async function getData() {
         let msg = ''
         for (const session of center.sessions) {
             if (session.min_age_limit < 45 && session.available_capacity > 0) {
-                let res = `${session.available_capacity} slots available for 18-44 at ${center.name} (${session.vaccine}) \n on ${session.date}`
+                let res = `${session.available_capacity} slots available for 18-44 at ${center.name} (${session.vaccine}) \n on ${session.date} \n dose 1 : ${session.available_capacity_dose1 } \n dose 2: ${session.available_capacity_dose2 }\n`
                 msg = msg + res + '\n\n'
             } else {
                 console.log(`No slots available for 18+ currently at ${center.name}`);
